@@ -2,16 +2,23 @@ from database import get_all_products
 
 def test_get_all_products():
     all_products = get_all_products()
-
     expected_keys = {"id", "name", "quantity", "unit", "expiry_date"}
 
     assert isinstance(all_products, list)
     assert all_products != []
-    assert isinstance(all_products[0], dict)
-    assert expected_keys.issubset(all_products[0].keys())
-    assert isinstance(all_products[0]["name"], str)
-    assert isinstance(all_products[0]["quantity"], int)
-    assert all_products[0]["name"].strip() != ""
-    assert isinstance(all_products[0]["unit"], str)
-    assert all_products[0]["unit"].strip() != ""
+
+    for product in all_products:
+        assert isinstance(product, dict)
+        assert expected_keys.issubset(product.keys())
+        assert isinstance(product["name"], str)
+        assert isinstance(product["quantity"], int)
+        assert product["name"].strip() != ""
+        assert isinstance(product["unit"], str)
+        assert product["unit"].strip() != ""
+     
+
+    
+
+    
+    
     
