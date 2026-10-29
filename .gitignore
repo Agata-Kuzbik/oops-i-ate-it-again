@@ -4,3 +4,4 @@ __pycache__/
 *.py[cod]
 inventory.db
 .env
+test_inventory.db

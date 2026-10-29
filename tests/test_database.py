@@ -1,5 +1,6 @@
-from database import get_all_products
+from database import get_all_products, init_db, add_product, reset_database
 from datetime import datetime
+
 
 def test_get_all_products():
     all_products = get_all_products()
@@ -29,9 +30,29 @@ def test_get_all_products():
             assert isinstance(product[key], expected_type)
 
        
-        
-        
-        
+def test_add_product():
+    database = "test_inventory.db"
+    init_db(database)
+    reset_database(database)
+
+    product = {
+    "name": "Sok jabłkowy",
+    "quantity": 1,
+    "unit": "l",
+    "expiry_date": "2027-04-13"
+    }
+    add_product(product, database)
+
+    all_products = get_all_products(database)
+
+    assert len(all_products) == 1
+    assert all_products[0]["name"] == "Sok jabłkowy"
+    assert all_products[0]["quantity"] == 1
+    assert all_products[0]["unit"] == "l"
+    assert all_products[0]["expiry_date"] == "2027-04-13"
+
+      
+
         
        
         

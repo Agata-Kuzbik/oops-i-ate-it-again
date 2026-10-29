@@ -1,15 +1,15 @@
 import sqlite3
 
 
-def get_connection():
+def get_connection(database="inventory.db"):
     """Open and return a connection to the SQLite database."""
-    connection = sqlite3.connect("inventory.db")
+    connection = sqlite3.connect(database)
     return connection
 
 
-def init_db():
+def init_db(database="inventory.db"):
     """Create the products table if it does not already exist."""
-    connection = get_connection()
+    connection = get_connection(database)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -25,10 +25,21 @@ def init_db():
     connection.commit()
     connection.close()
 
+def reset_database(database):
+    """Clear all records from the products table in the specified database."""
+    connection = get_connection(database)
+    cursor = connection.cursor()
+    
+    cursor.execute("""
+        DELETE FROM products;
+        """)
+    
+    connection.commit()
+    connection.close()
 
-def add_product(product):
+def add_product(product, database="inventory.db"):
     """Insert a new product into the database."""
-    connection = get_connection()
+    connection = get_connection(database)
     cursor = connection.cursor()
 
     # Use placeholders to safely pass product values to the SQL query.
@@ -46,9 +57,9 @@ def add_product(product):
     connection.close()
 
 
-def get_all_products():
+def get_all_products(database="inventory.db"):
     """Retrieve all products from the database."""
-    connection = get_connection()
+    connection = get_connection(database)
     cursor = connection.cursor()
 
     cursor.execute("""
