@@ -1,6 +1,5 @@
 import sqlite3
 
-
 def get_connection(database="inventory.db"):
     """Open and return a connection to the SQLite database."""
     connection = sqlite3.connect(database)
@@ -39,6 +38,13 @@ def reset_database(database):
 
 def add_product(product, database="inventory.db"):
     """Insert a new product into the database."""
+    if "name" not in product:
+        raise KeyError("Name is missing")
+    if not isinstance(product["name"], str):
+        raise TypeError("Invalid type")
+    if product["name"].strip() == "":
+        raise ValueError("Product name cannot be empty")
+
     connection = get_connection(database)
     cursor = connection.cursor()
 
