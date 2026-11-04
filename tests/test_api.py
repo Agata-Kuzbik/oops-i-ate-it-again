@@ -12,19 +12,23 @@ def test_get_products():
     assert isinstance(data, list)
     assert data != []
 
-    product = data[0]
+    for product in data:
 
-    assert isinstance(data[0], dict)
-    assert expected_keys.issubset(product.keys())
-    assert isinstance(product["name"], str)
-    assert isinstance(product["quantity"], int)
+        assert isinstance(product, dict)
+        assert expected_keys.issubset(product.keys())
+        assert isinstance(product["id"], int)
+        assert isinstance(product["name"], str)
+        assert isinstance(product["quantity"], int)
+        assert isinstance(product["unit"], str)
+        assert isinstance(product["expiry_date"], str)
+
+
 
 def test_get_home():
     client = app.test_client()
     response = client.get("/")
     
     
-
     assert response.status_code == 200
     assert response.data.decode("utf-8") == "Oops! I Ate It Again!"
     

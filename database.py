@@ -1,5 +1,6 @@
 import sqlite3
 
+
 def get_connection(database="inventory.db"):
     """Open and return a connection to the SQLite database."""
     connection = sqlite3.connect(database)
@@ -24,6 +25,7 @@ def init_db(database="inventory.db"):
     connection.commit()
     connection.close()
 
+
 def reset_database(database):
     """Clear all records from the products table in the specified database."""
     connection = get_connection(database)
@@ -35,6 +37,7 @@ def reset_database(database):
     
     connection.commit()
     connection.close()
+
 
 def add_product(product, database="inventory.db"):
     """Insert a new product into the database."""
