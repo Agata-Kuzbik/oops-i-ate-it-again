@@ -1,10 +1,12 @@
-from database import get_all_products, init_db, add_product, reset_database
+from database import get_all_products, add_product
 from datetime import datetime
 import pytest
 
 
-def test_get_all_products():
-    all_products = get_all_products()
+def test_get_all_products(database, sample_product):
+
+    add_product(sample_product, database)
+    all_products = get_all_products(database)
     expected_keys = {"id", "name", "quantity", "unit", "expiry_date"}
     expected_types = {
         "id": int,
@@ -14,8 +16,10 @@ def test_get_all_products():
         "expiry_date": str,
     }
 
+
     assert isinstance(all_products, list)
-    assert all_products != []
+    assert len(all_products) == 1
+    assert all_products[0]["name"] == sample_product["name"]
 
     for product in all_products:
         assert isinstance(product, dict)
@@ -29,11 +33,8 @@ def test_get_all_products():
             assert isinstance(product[key], expected_type)
 
        
-def test_add_product():
-    database = "test_inventory.db"
-    init_db(database)
-    reset_database(database)
-
+def test_add_product(database):
+   
     product = {
         "name": "Sok jabłkowy",
         "quantity": 1,
@@ -52,7 +53,7 @@ def test_add_product():
     assert all_products[0]["expiry_date"] == "2027-04-13"
 
 
-def test_add_product_without_name():
+def test_add_product_without_name(database):
 
     product = {
         "quantity": 1,
@@ -61,9 +62,9 @@ def test_add_product_without_name():
         }
 
     with pytest.raises(KeyError):
-        add_product(product, "test_inventory.db")
+        add_product(product, database)
 
-def test_add_product_with_invalid_name_type():
+def test_add_product_with_invalid_name_type(database):
 
     product = {
             "name": 123,
@@ -73,9 +74,9 @@ def test_add_product_with_invalid_name_type():
             }
     
     with pytest.raises(TypeError):
-        add_product(product, "test_inventory.db")
+        add_product(product, database)
 
-def test_add_product_with_empty_name():
+def test_add_product_with_empty_name(database):
 
     product = {
             "name": "",
@@ -85,9 +86,9 @@ def test_add_product_with_empty_name():
             }
         
     with pytest.raises(ValueError):
-        add_product(product, "test_inventory.db")
+        add_product(product, database)
 
-def test_add_product_with_whitespace_name():
+def test_add_product_with_whitespace_name(database):
 
     product = {
             "name": "  ",
@@ -97,7 +98,7 @@ def test_add_product_with_whitespace_name():
             }
      
     with pytest.raises(ValueError):
-        add_product(product, "test_inventory.db")
+        add_product(product, database)
       
 
         
