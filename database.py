@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import date
 
 
 def get_connection(database="inventory.db"):
@@ -16,7 +17,7 @@ def init_db(database="inventory.db"):
         CREATE TABLE IF NOT EXISTS products (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            quantity INTEGER NOT NULL,
+            quantity REAL NOT NULL,
             unit TEXT NOT NULL,
             expiry_date TEXT NOT NULL
         )
@@ -47,6 +48,38 @@ def add_product(product, database="inventory.db"):
         raise TypeError("Invalid type")
     if product["name"].strip() == "":
         raise ValueError("Product name cannot be empty")
+    
+    if "quantity" not in product:
+        raise KeyError("Quantity is missing")
+    if isinstance(product["quantity"], bool):
+        raise TypeError("Quantity cannot be boolean")
+    if not isinstance(product["quantity"], (int, float)):
+        raise TypeError("Invalid type")
+    if product["quantity"] <= 0:
+        raise ValueError("Invalid value. Value should be > 0")
+    if not float(product["quantity"] *10).is_integer():
+        raise ValueError("Quantity can have at most one decimal place")
+
+    if "unit" not in product:
+        raise KeyError("Unit is missing")
+    if not isinstance(product["unit"], str):
+        raise TypeError("Invalid type")
+    if product["unit"].strip() == "":
+        raise ValueError("Product unit cannot be empty")
+
+    if "expiry_date" not in product:
+        raise KeyError("Expiry date is missing")
+    if not isinstance(product["expiry_date"], str):
+        raise TypeError("Invalid type")
+
+    
+    today= date.today()
+    expiry_date = date.fromisoformat(product["expiry_date"])
+    if expiry_date < today:
+        raise ValueError("Expiry date cannot be in the past.")
+    
+            
+    
 
     connection = get_connection(database)
     cursor = connection.cursor()
