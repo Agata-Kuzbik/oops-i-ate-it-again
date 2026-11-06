@@ -18,19 +18,30 @@ def get_products():
 @app.route("/products", methods=["POST"])
 def add_product_route():
     try:
-        quantity = request.form["quantity"]
+        quantity = request.form.get("quantity")
+        name = request.form.get("name")
+        unit = request.form.get("unit")
+        expiry_date = request.form.get("expiry_date")
 
-        if quantity.strip() == "":
+        if not quantity or quantity.strip() == "":
             raise ValueError("Product quantity is required")
-
+        if not name or name.strip() == "":
+            raise ValueError("Product name is required")
+        if not unit or unit.strip() == "":
+            raise ValueError("Product unit is required")
+        if not expiry_date or expiry_date.strip() == "":
+            raise ValueError("Product expiry date is required")
+        
         product={
-            "name": request.form["name"], 
+            "name": name, 
             "quantity": float(quantity), 
-            "unit": request.form["unit"], 
-            "expiry_date": request.form["expiry_date"]}
+            "unit": unit, 
+            "expiry_date": expiry_date
+            }
 
         add_product(product)
-    except ValueError as error:
+        
+    except (ValueError, TypeError) as error:
         flash(str(error))
     else:
         flash("Product added successfully")
