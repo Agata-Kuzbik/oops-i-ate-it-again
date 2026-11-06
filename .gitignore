@@ -5,3 +5,5 @@ __pycache__/
 inventory.db
 .env
 test_inventory.db
+cookies.txt
+.vscode/
