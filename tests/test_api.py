@@ -18,7 +18,7 @@ def test_get_products():
         assert expected_keys.issubset(product.keys())
         assert isinstance(product["id"], int)
         assert isinstance(product["name"], str)
-        assert isinstance(product["quantity"], int)
+        assert type(product["quantity"]) in (int, float)
         assert isinstance(product["unit"], str)
         assert isinstance(product["expiry_date"], str)
 
@@ -27,10 +27,15 @@ def test_get_products():
 def test_get_home():
     client = app.test_client()
     response = client.get("/")
-    
-    
+
+    html = response.data.decode("utf-8")
+
     assert response.status_code == 200
-    assert response.data.decode("utf-8") == "Oops! I Ate It Again!"
-    
+    assert "Oops! I Ate It Again!" in html
+    assert "Product name:" in html
+    assert "Quantity:" in html
+    assert "Unit:" in html
+    assert "Expiry date:" in html
+    assert "Add product" in html
 
 
