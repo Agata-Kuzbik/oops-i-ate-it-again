@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <title>Oops! I Ate It Again!</title>
+    </head>
+    <body>
+        <h1>Oops! I Ate It Again!</h1>
+        <p>My food inventory</p>
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endwith %}
+        <form action="/products" method="POST">
+            
+            <label for="product-name">Product name:</label>
+            <input type="text" id="product-name" name="name" required>
+            <label for="product-quantity">Quantity:</label>
+            <input type="number" id="product-quantity" name="quantity" step="0.1" required>
+            <label for="product-unit">Unit:</label>
+            <input type="text" id="product-unit" name="unit" required>
+            <label for="product-expiry-date">Expiry date:</label>
+            <input type="date" id="product-expiry-date" name="expiry_date" required>
+            <button type="submit">Add product</button>
+
+        </form>
+    </body>
+</html>
