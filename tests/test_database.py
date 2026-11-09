@@ -271,7 +271,7 @@ def test_add_product_with_expiry_date_for_future(database):
                          (None, KeyError, False)
                          ])
 
-def est_add_product_with_invalid_unit(unit, expected_error,include_unit, database):
+def test_add_product_with_invalid_unit(unit, expected_error,include_unit, database):
 
     product = {
         "name": "Mleko",
