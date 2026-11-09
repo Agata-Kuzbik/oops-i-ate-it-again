@@ -33,9 +33,9 @@ def add_product_route():
             raise ValueError("Product expiry date is required")
         
         product={
-            "name": name, 
+            "name": name.strip(), 
             "quantity": float(quantity), 
-            "unit": unit, 
+            "unit": unit.strip(), 
             "expiry_date": expiry_date
             }
 
