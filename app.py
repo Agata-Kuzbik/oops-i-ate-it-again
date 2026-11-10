@@ -4,6 +4,7 @@ from database import get_all_products, add_product
 
 
 app = Flask(__name__)
+app.config["DATABASE"] = "inventory.db"
 app.secret_key = "dev-secret-key"
 
 @app.route("/")
@@ -12,7 +13,7 @@ def home():
 
 @app.route("/api/products")
 def get_products():
-    products = get_all_products()
+    products = get_all_products(app.config["DATABASE"])
     return jsonify(products)
 
 @app.route("/products", methods=["POST"])
@@ -39,7 +40,7 @@ def add_product_route():
             "expiry_date": expiry_date
             }
 
-        add_product(product)
+        add_product(product, app.config["DATABASE"])
         
     except (ValueError, TypeError) as error:
         flash(str(error))
