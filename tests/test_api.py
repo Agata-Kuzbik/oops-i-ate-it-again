@@ -67,6 +67,7 @@ def test_add_product(database):
 
         products = get_all_products(database)
 
+        assert len(products) == 1
         assert response.status_code == 302
         assert products[0]["name"] == "Milk"
         assert products[0]["quantity"] == 1.0
