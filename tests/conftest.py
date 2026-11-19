@@ -1,6 +1,7 @@
 import pytest
 import os
 from database import init_db
+from app import app
 
 @pytest.fixture(scope="function")
 def database():
@@ -28,3 +29,13 @@ def sample_product():
         "expiry_date": "2027-04-13"
         }
     return product
+
+@pytest.fixture()
+def app_database(database):
+    original_database = app.config["DATABASE"]
+    app.config["DATABASE"] = database
+
+    try:
+        yield app
+    finally:
+        app.config["DATABASE"] = original_database

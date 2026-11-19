@@ -1,4 +1,4 @@
-from flask import Flask, jsonify,render_template, request, redirect, url_for, flash
+from flask import Flask, jsonify, render_template, request, redirect, url_for, flash
 from database import get_all_products, add_product
 
 

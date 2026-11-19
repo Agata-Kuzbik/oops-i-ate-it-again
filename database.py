@@ -27,19 +27,6 @@ def init_db(database="inventory.db"):
     connection.close()
 
 
-def reset_database(database):
-    """Clear all records from the products table in the specified database."""
-    connection = get_connection(database)
-    cursor = connection.cursor()
-    
-    cursor.execute("""
-        DELETE FROM products;
-        """)
-    
-    connection.commit()
-    connection.close()
-
-
 def add_product(product, database="inventory.db"):
     """Insert a new product into the database."""
     if "name" not in product:
@@ -107,6 +94,7 @@ def get_all_products(database="inventory.db"):
     cursor.execute("""
         SELECT *
         FROM products
+        ORDER BY name ASC
     """)
 
     products = cursor.fetchall()
